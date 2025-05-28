@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title
+	th:text="${empleado.id != null} ? 'Editar Empleado' : 'Crear Empleado'">Formulario
+	Empleado</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+<body>
+
+    <div th:replace="fragments/header :: header"></div>
+
+
+	<div class="container mt-4">
+		<h2
+			th:text="${empleado.id != null} ? 'Editar Empleado' : 'Crear Empleado'">Formulario
+			Empleado</h2>
+		<form th:action="@{/empleado/guardar}" th:object="${empleado}"
+			method="post">
+			<!-- Campo oculto para id -->
+			<input type="hidden" th:field="*{id}" />
+
+			<!-- Campo oculto para el rol, para que se conserve en edición -->
+			<input type="hidden" th:field="*{rol}" />
+
+
+			<!-- Campo para el nombre de usuario -->
+			<div class="mb-3">
+				<label for="usuario" class="form-label">Usuario</label> <input
+					type="text" th:field="*{usuario}" class="form-control" id="usuario"
+					required>
+			</div>
+
+			<div class="mb-3">
+				<label for="nombre" class="form-label">Nombre</label> <input
+					type="text" th:field="*{nombre}" class="form-control" id="nombre"
+					required>
+			</div>
+
+			<div class="mb-3">
+				<label for="correo" class="form-label">Correo</label> <input
+					type="email" th:field="*{correo}" class="form-control" id="correo"
+					required>
+			</div>
+
+			<div class="mb-3">
+				<label for="telefono" class="form-label">Teléfono</label> <input
+					type="text" th:field="*{telefono}" class="form-control"
+					id="telefono">
+			</div>
+
+			<div class="mb-3">
+				<label for="direccion" class="form-label">Dirección</label> <input
+					type="text" th:field="*{direccion}" class="form-control"
+					id="direccion">
+			</div>
+
+			<!-- Campo para la contraseña -->
+			<div class="mb-3">
+				<label for="contrasena" class="form-label">Contraseña</label>
+				<!-- Nota: Al editar, si dejas este campo vacío se conservará la contraseña actual -->
+				<input type="password" th:field="*{contrasena}" class="form-control"
+					id="contrasena"
+					th:placeholder="${empleado.id != null} ? 'Dejar en blanco para conservar' : ''" />
+			</div>
+
+			<button type="submit" class="btn btn-success">Guardar</button>
+		</form>
+	</div>
+	
+	    <div th:replace="fragments/footer :: footer"></div>
+	
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

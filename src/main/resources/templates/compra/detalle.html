@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Pedido</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="container mt-4">
+        <h1>Detalles del Pedido</h1>
+
+        <h4>Pedido #<span th:text="${pedido.id}"></span></h4>
+        <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/yyyy')}"></span></p>
+        <p><strong>Total:</strong> $<span th:text="${pedido.total}"></span></p>
+        <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
+
+        <h4>Detalles del Pedido</h4>
+        <ul>
+            <li th:each="detalle : ${detalles}">
+                <p><strong>Producto:</strong> <span th:text="${detalle.producto.nombre}"></span></p>
+                <p><strong>Precio unitario:</strong> $<span th:text="${detalle.precioUnitario}"></span></p>
+                <p><strong>Cantidades:</strong> XS: <span th:text="${detalle.xs}"></span>,
+                    S: <span th:text="${detalle.s}"></span>,
+                    M: <span th:text="${detalle.m}"></span>,
+                    L: <span th:text="${detalle.l}"></span>,
+                    XL: <span th:text="${detalle.xl}"></span>,
+                    XXL: <span th:text="${detalle.xxl}"></span>
+                </p>
+            </li>
+        </ul>
+
+        <h4>Personalización</h4>
+        <form th:action="@{/compra/subirPersonalizacion}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="pedidoDetalleId" th:value="${detalles[0].id}">
+            
+            <div class="mb-3">
+                <label for="archivo" class="form-label">Subir archivo de personalización:</label>
+                <input type="file" class="form-control" id="archivo" name="archivo">
+            </div>
+
+            <div class="mb-3">
+                <label for="detalles" class="form-label">Detalles de personalización:</label>
+                <textarea class="form-control" id="detalles" name="detalles" rows="3" 
+                          th:text="${personalizacion != null ? personalizacion.detalles : ''}"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar Personalización</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

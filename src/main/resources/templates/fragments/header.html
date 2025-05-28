@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Header Fragment</title>
+<!-- Asegúrate de tener Bootstrap en tu layout principal -->
+</head>
+<body>
+	<header th:fragment="header">
+		<nav class="navbar navbar-expand-lg navbar-dark"
+			style="background-color: #4d64e5;">
+			<div class="container">
+				<a class="navbar-brand" th:href="@{/}"> <img
+					th:src="@{/images/makatos.jpg}" alt="Makatos Sport Logo"
+					style="height: 50px; margin-right: 10px;" /> Makatos Sport
+				</a>
+				<button class="navbar-toggler" type="button"
+					data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+					aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item"><a class="nav-link" th:href="@{/home}">Inicio</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/producto/lista}">Productos</a></li>
+						<li class="nav-item" sec:authorize="hasAuthority('Cliente')">
+							<a class="nav-link" th:href="@{/compra/mis-pedidos}">Compras</a>
+						</li>
+						<!-- Enlaces condicionales según la autoridad -->
+						<li class="nav-item" sec:authorize="hasAuthority('Administrador')">
+							<a class="nav-link" th:href="@{/empleado/lista}">Empleados</a>
+						</li>
+						<li class="nav-item" sec:authorize="hasAuthority('Administrador')">
+							<a class="nav-link" th:href="@{/usuario/lista}">Usuarios</a>
+						</li>
+						<li class="nav-item"
+							sec:authorize="hasAnyAuthority('Administrador','Empleado')">
+							<a class="nav-link" th:href="@{/reporte/ventas}">Reportes</a>
+						</li>
+						<li class="nav-item" sec:authorize="hasAuthority('Cliente')">
+							<a class="nav-link" th:href="@{/cliente/perfil}">Perfil</a>
+						</li>
+					</ul>
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item" sec:authorize="isAuthenticated()"><a
+							class="nav-link" th:href="@{/logout}">Cerrar Sesión</a></li>
+						<li class="nav-item" sec:authorize="!isAuthenticated()"><a
+							class="nav-link" th:href="@{/login}">Login</a></li>
+						<li class="nav-item" sec:authorize="!isAuthenticated()"><a
+							class="nav-link" th:href="@{/cliente/registro}">Registrarse</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+</body>
+</html>

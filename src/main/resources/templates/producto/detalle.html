@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Producto - Makatos Sport</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="container mt-4">
+        <h1 th:text="${producto.nombre}">Nombre del Producto</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <img th:src="@{'/images/' + ${producto.imagen}}" class="img-fluid" alt="Imagen del Producto">
+            </div>
+            <div class="col-md-6">
+                <p th:text="${producto.descripcion}">Descripción</p>
+                <p><strong>Precio:</strong> $<span th:text="${producto.precio}"></span></p>
+                <p><strong>Tipo:</strong> <span th:text="${producto.tipo}"></span></p>
+
+                <h4>Stock disponible</h4>
+                <ul>
+                    <li>XS: <span th:text="${stock.xs}"></span></li>
+                    <li>S: <span th:text="${stock.s}"></span></li>
+                    <li>M: <span th:text="${stock.m}"></span></li>
+                    <li>L: <span th:text="${stock.l}"></span></li>
+                    <li>XL: <span th:text="${stock.xl}"></span></li>
+                    <li>XXL: <span th:text="${stock.xxl}"></span></li>
+                </ul>
+
+                <!-- Botones condicionales según el rol utilizando sec:authorize -->
+                <div>
+                    <!-- Cliente: solo botón de Comprar -->
+                    <a sec:authorize="hasAuthority('Cliente')"
+                       th:href="@{/compra/nueva(productoId=${producto.id})}"
+                       class="btn btn-success">
+                        Comprar
+                    </a>
+                    
+                    <!-- Empleado: solo botón de Editar -->
+                    <a sec:authorize="hasAuthority('Empleado')"
+                       th:href="@{'/producto/editar/' + ${producto.id}}"
+                       class="btn btn-warning">
+                        Editar
+                    </a>
+                    
+                    <!-- Administrador: botones de Editar y Eliminar -->
+                    <span sec:authorize="hasAuthority('Administrador')">
+                        <a th:href="@{'/producto/editar/' + ${producto.id}}"
+                           class="btn btn-warning">
+                            Editar
+                        </a>
+                        <a th:href="@{'/producto/eliminar/' + ${producto.id}}"
+                           class="btn btn-danger"
+                           onclick="return confirm('¿Está seguro de eliminar?');">
+                            Eliminar
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
